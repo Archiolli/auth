@@ -1,0 +1,88 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/pr911651/p2/apibetter/apibetter.csproj": {}
+  },
+  "projects": {
+    "/home/pr911651/p2/apibetter/apibetter.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/pr911651/p2/apibetter/apibetter.csproj",
+        "projectName": "apibetter",
+        "projectPath": "/home/pr911651/p2/apibetter/apibetter.csproj",
+        "packagesPath": "/home/pr911651/.nuget/packages/",
+        "outputPath": "/home/pr911651/p2/apibetter/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/pr911651/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/pr911651/.asdf/installs/dotnet-core/7.0.403/sdk/7.0.403/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
