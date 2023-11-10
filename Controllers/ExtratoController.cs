@@ -5,6 +5,7 @@ using BancoApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BancoApi.Controllers
 {
@@ -12,20 +13,25 @@ namespace BancoApi.Controllers
     public class ExtratoController : ControllerBase
     {
 
-        [HttpGet("extrato/{email}")]
+        [HttpGet("extrato")]
         public IActionResult GetExtrato(
-            [FromServices] AppDbContext context,
-            [FromRoute] string email
+            [FromServices] AppDbContext context
         )
         {
             try
             {
-                var user = context.Users.FirstOrDefault(u => u.Email == email);
+                var Authorization = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+                if (string.IsNullOrWhiteSpace(Authorization))
+                    return BadRequest(new { message = "Usuario não autenticado para acessar essa rota." });
+
+                var user = context.Users.FirstOrDefault(x => x.Email == Authorization);
 
                 if (user == null)
-                    return NotFound(new { message = "Conta não existente!" });
+                    return NotFound(new { message = "Usuário inexistente!" });
 
-                var extratos = context.Extratos.Where(e => e.UserEmail == email).ToList();
+
+                var extratos = context.Extratos.Where(e => e.UserEmail == Authorization).ToList();
 
                 return Ok(extratos);
             }

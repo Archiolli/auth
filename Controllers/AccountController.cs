@@ -12,7 +12,7 @@ namespace BancoApi.Controllers
     [ApiController]
     public class AccountControllers : ControllerBase
     {
-        [HttpPost("account/login")]
+        [HttpPost("login")]
         public IActionResult Login(
             [FromServices] AppDbContext context,
             [FromBody] AccountLoginViewModel model,
@@ -40,7 +40,7 @@ namespace BancoApi.Controllers
         }
 
         //[Authorize(Roles = "adm, cliente")]
-        [HttpPost("account/signup")]
+        [HttpPost("signup")]
         public IActionResult Signup(
             [FromBody] AccountSignupViewModel model,
             [FromServices] AppDbContext context)
@@ -112,12 +112,12 @@ namespace BancoApi.Controllers
         {
             try
             {
-                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+                var Authorization = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-                if (string.IsNullOrWhiteSpace(userEmail))
-                    return BadRequest(new { message = "Email do usuário não encontrado nos claims." });
+                if (string.IsNullOrWhiteSpace(Authorization))
+                    return BadRequest(new { message = "Usuario não autenticado para acessar essa rota." });
 
-                var user = context.Users.FirstOrDefault(x => x.Email == userEmail);
+                var user = context.Users.FirstOrDefault(x => x.Email == Authorization);
 
                 if (user == null)
                     return NotFound(new { message = "Usuário inexistente!" });
@@ -131,18 +131,29 @@ namespace BancoApi.Controllers
                 return StatusCode(500, new { message = "Erro interno: " + ex.Message });
             }
         }
-        [HttpPut("saldo/{email}")]
+        [HttpPut("saldo")]
         [Authorize]
         public IActionResult Saldo(
             [FromBody] AccountSaldoUpdateViewModel viewModel,
-            [FromServices] AppDbContext context,
-            [FromRoute] string email)
+            [FromServices] AppDbContext context
+            )
         {
             try
             {
-                var user = context.Users.FirstOrDefault(u => u.Email == email);
+                var Authorization = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+                if (string.IsNullOrWhiteSpace(Authorization))
+                    return BadRequest(new { message = "Usuario não autenticado para acessar essa rota." });
+
+                var user = context.Users.FirstOrDefault(x => x.Email == Authorization);
+
                 if (user == null)
                     return NotFound(new { message = "Usuário inexistente!" });
+
+                // 
+                // var user = context.Users.FirstOrDefault(u => u.Email == email);
+                // if (user == null)
+                    // return NotFound(new { message = "Usuário inexistente!" });
 
                 user.Saldo += viewModel.Saldo;
 
