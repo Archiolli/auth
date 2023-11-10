@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/pr911651/p2/apibetter/apibetter.csproj": {}
+    "C:\\Users\\João Archiolli\\Desktop\\api\\auth\\apibetter.csproj": {}
   },
   "projects": {
-    "/home/pr911651/p2/apibetter/apibetter.csproj": {
+    "C:\\Users\\João Archiolli\\Desktop\\api\\auth\\apibetter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/pr911651/p2/apibetter/apibetter.csproj",
+        "projectUniqueName": "C:\\Users\\João Archiolli\\Desktop\\api\\auth\\apibetter.csproj",
         "projectName": "apibetter",
-        "projectPath": "/home/pr911651/p2/apibetter/apibetter.csproj",
-        "packagesPath": "/home/pr911651/.nuget/packages/",
-        "outputPath": "/home/pr911651/p2/apibetter/obj/",
+        "projectPath": "C:\\Users\\João Archiolli\\Desktop\\api\\auth\\apibetter.csproj",
+        "packagesPath": "C:\\Users\\João Archiolli\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\João Archiolli\\Desktop\\api\\auth\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/pr911651/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\João Archiolli\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -80,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/pr911651/.asdf/installs/dotnet-core/7.0.403/sdk/7.0.403/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

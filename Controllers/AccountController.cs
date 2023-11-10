@@ -3,8 +3,9 @@ using BancoApi.Models;
 using BancoApi.Services;
 using BancoApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Authorization; 
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace BancoApi.Controllers
 {
@@ -23,22 +24,22 @@ namespace BancoApi.Controllers
                     .FirstOrDefault(x => x.Email == model.Email);
 
                 if (user == null)
-                    return StatusCode(401, new {message = "usuario ou senha invalido"});
-
-                if(user.Password != Settings.GenerateHash(model.Password))
                     return StatusCode(401, new { message = "usuario ou senha invalido" });
-                
+
+                if (user.Password != Settings.GenerateHash(model.Password))
+                    return StatusCode(401, new { message = "usuario ou senha invalido" });
+
                 var token = tokenService.CreateToken(user);
 
-                return Ok(new { token });
+                return Ok(new { token, user });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Erro interno" });
+                return StatusCode(500, new { message = "Erro interno: " + ex.Message });
             }
         }
 
-        [Authorize(Roles = "adm, cliente")]
+        //[Authorize(Roles = "adm, cliente")]
         [HttpPost("account/signup")]
         public IActionResult Signup(
             [FromBody] AccountSignupViewModel model,
@@ -57,74 +58,113 @@ namespace BancoApi.Controllers
                     Email = model.Email,
                     Password = Settings.GenerateHash(model.Password),
                     Name = model.Name,
-                    Saldo = 0,
-                    Role = "cliente"
+                    Role = "cliente",
+                    Saldo = 0
                 };
-                    
+
                 context.Users.Add(newUser);
-                context.SaveChanges();                
+                context.SaveChanges();
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Erro interno" });
+                return StatusCode(500, new { message = "Erro interno: " + ex.Message });
             }
         }
 
-
-        [HttpGet("saldo/{email:string}")]
-        public IActionResult Saldo(
-            [FromBody] AccountSaldoViewModel model,
-            [FromServices] AppDbContext context,
-            [FromRoute] string email
-            )
+        [Authorize(Roles = "adm")]
+        [HttpPost("account/signup/adm")]
+        public IActionResult SignupAdm(
+            [FromBody] AccountSignupViewModel model,
+            [FromServices] AppDbContext context)
         {
             try
             {
-                var user = context.Users.Find(email);
-                if (user == null)
-                    return NotFound(new { message = "Usuario inexistente!" });
+                var user = context.Users
+                    .FirstOrDefault(x => x.Email == model.Email);
 
-                var saldo = context.Users.Find(user.Saldo);         
+                if (user != null)
+                    return StatusCode(401, new { message = "Email já cadastrado!" });
 
-                return Ok(saldo);
+                var newUser = new User
+                {
+                    Email = model.Email,
+                    Password = Settings.GenerateHash(model.Password),
+                    Name = model.Name,
+                    Role = "adm",
+                    Saldo = 0
+                };
+
+                context.Users.Add(newUser);
+                context.SaveChanges();
+                return Ok(newUser);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Erro interno" });
+                return StatusCode(500, new { message = "Erro interno: " + ex.Message });
             }
         }
 
-        [HttpPut("saldo/{email:string}")]
-        public IActionResult ChangeSaldo(
+        [HttpGet("saldo")]
+        [Authorize]
+        public IActionResult SaldoByUser([FromServices] AppDbContext context)
+        {
+            try
+            {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+                if (string.IsNullOrWhiteSpace(userEmail))
+                    return BadRequest(new { message = "Email do usuário não encontrado nos claims." });
+
+                var user = context.Users.FirstOrDefault(x => x.Email == userEmail);
+
+                if (user == null)
+                    return NotFound(new { message = "Usuário inexistente!" });
+
+                var saldo = user.Saldo;
+
+                return Ok(new { saldo });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro interno: " + ex.Message });
+            }
+        }
+        [HttpPut("saldo/{email}")]
+        [Authorize]
+        public IActionResult Saldo(
             [FromBody] AccountSaldoUpdateViewModel viewModel,
             [FromServices] AppDbContext context,
-            [FromRoute] string email
-            )
+            [FromRoute] string email)
         {
             try
             {
-                var user = context.Users.Find(email);
+                var user = context.Users.FirstOrDefault(u => u.Email == email);
                 if (user == null)
-                    return NotFound(new { message = "Usuario inexistente!" });
+                    return NotFound(new { message = "Usuário inexistente!" });
 
-                var saldo = context.Users.Find(user.Saldo);
-                user.Saldo += viewModel.Saldo; 
-                
+                user.Saldo += viewModel.Saldo;
+
+                user.Extrato = user.Extrato ?? new Extrato();
                 user.Extrato.NumeroExtrato = viewModel.Saldo;
                 user.Extrato.UserEmail = viewModel.Email;
 
-                if(user.Saldo < 0)
+                if (user.Saldo < 0)
                     return StatusCode(400, new { message = "O saldo não pode ser negativo!" });
-                
+
                 context.SaveChanges();
-                return StatusCode(200, new { message = "O saldo foi alterado. Saldo atual: " + user.Saldo });;
+                return StatusCode(200, new { message = "O saldo foi alterado. Saldo atual: " + user.Saldo });
             }
-            catch
+            catch (DbUpdateException ex)
             {
-                return StatusCode(500, new { message = "Erro interno" });
+                return StatusCode(500, new { message = "Erro ao atualizar o saldo: " + ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro interno: " + ex.Message });
             }
         }
+
     }
 }

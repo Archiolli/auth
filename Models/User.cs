@@ -8,6 +8,6 @@
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
         public double Saldo { get; set; }
-        public Extrato Extrato { get; set; }
+        public Extrato? Extrato { get; set; }
     }
 }
