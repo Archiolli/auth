@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UNISANTA\\Aplic. Desktop\\DesafioAspNet-WindowsForm\\auth\\apibetter.csproj": {}
+    "C:\\Users\\João Archiolli\\Desktop\\auth\\apibetter.csproj": {}
   },
   "projects": {
-    "D:\\UNISANTA\\Aplic. Desktop\\DesafioAspNet-WindowsForm\\auth\\apibetter.csproj": {
+    "C:\\Users\\João Archiolli\\Desktop\\auth\\apibetter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UNISANTA\\Aplic. Desktop\\DesafioAspNet-WindowsForm\\auth\\apibetter.csproj",
+        "projectUniqueName": "C:\\Users\\João Archiolli\\Desktop\\auth\\apibetter.csproj",
         "projectName": "apibetter",
-        "projectPath": "D:\\UNISANTA\\Aplic. Desktop\\DesafioAspNet-WindowsForm\\auth\\apibetter.csproj",
-        "packagesPath": "C:\\Users\\Marcelo_Aguiar\\.nuget\\packages\\",
-        "outputPath": "D:\\UNISANTA\\Aplic. Desktop\\DesafioAspNet-WindowsForm\\auth\\obj\\",
+        "projectPath": "C:\\Users\\João Archiolli\\Desktop\\auth\\apibetter.csproj",
+        "packagesPath": "C:\\Users\\João Archiolli\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\João Archiolli\\Desktop\\auth\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Marcelo_Aguiar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\João Archiolli\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -62,6 +61,10 @@
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[7.0.13, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
             }
           },
           "imports": [
@@ -83,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

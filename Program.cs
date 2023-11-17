@@ -29,6 +29,8 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<TokenService>();
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 app.UseAuthentication();
